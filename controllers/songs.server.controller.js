@@ -68,6 +68,7 @@ module.exports.home = async (req,res,next) => {
 // /browse/album
 module.exports.album = async (req,res,next) => {
     let token = mycache.get("aTempTokenKey");
+    
     if(token){
       try{
         let paths = await getLinksAsync(token);
