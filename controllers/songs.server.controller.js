@@ -6,6 +6,7 @@ var mycache = new NodeCache();
 
 var mongoose = require('mongoose');
 var Song = require('./../models/Song.js');
+var Dropbox = require("./../models/Dropbox.js");
 var errorHandler = require('./errors.server.controller');
 var _ = require('lodash');
 
@@ -15,84 +16,112 @@ function escapeRegex(text) {
 
 //steps 1,2,3
 module.exports.home = async (req,res,next) => {
-    let token = mycache.get("aTempTokenKey");
-    if(token){
+  Dropbox.find(async (err, data) => {
+    if(err) {
+      console.log(err);
+    } else {
+      let token = data[0].access_token;
       try{
         let paths = await getLinksAsync(token);
-        console.log(paths);
+        // console.log(paths);
         // search start demo
-        
         if(req.query.search) {
           const regex = new RegExp(escapeRegex(req.query.search), 'gi');
           // Get all campgrounds from DB
-          Song.find({title: regex}, function(err, data){
-              if(err){
-                  console.log(err);
-               } else {
-                  // res.status(200).json(data);
-                  res.render("./../public/views/player/songs/songs.ejs",{
-                      user: req.user || null,
-                      request: req,
-                      songs: paths,
-                      song: data,
-                      layout: false
-                  });
-               }
-            });
+          Song.find({
+              // title: regex
+              $or: [ { title: regex }, { album: regex }, { artist: regex  }, { genre: regex }, { year: regex  } ]
+          }, 
+            function(err, data){
+            if(err){
+              console.log(err);
+            } else {
+              // res.status(200).json(data);
+              res.render("./../public/views/player/songs/songs.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data,
+                layout: false
+              });
+            }
+          });
         } else {
           Song.find({}, function(err, data){
-             if(err){
-                return res.status(400).send({
-                  message: errorHandler.getErrorMessage(err)
-                });
-             } else {
-                // res.status(200).json(data);
-                res.render("./../public/views/player/songs/songs.ejs",{
-                    user: req.user || null,
-                    request: req,
-                    songs: paths,
-                    song: data
-                });
-             }
+            if(err){
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              // res.status(200).json(data);
+              res.render("./../public/views/player/songs/songs.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data
+              });
+            }
           });
         } 
         // search end
-      }catch(error){
+      } catch(error) {
         return next(new Error("Error getting files from Dropbox"));
       }
-    } else {
-        res.redirect('/dropbox/auth');
     }
+  });
 };     
 
 // /browse/album
 module.exports.album = async (req,res,next) => {
-    let token = mycache.get("aTempTokenKey");
-    if(token){
+  Dropbox.find(async (err, data) => {
+    if(err) {
+      console.log(err);
+    } else {
+      let token = data[0].access_token;
       try{
         let paths = await getLinksAsync(token);
-        console.log(paths);
-        Song.find(function (err, data) {
-          if (err) {
-            return res.status(400).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          } else {
-            res.render('./../public/views/player/songs/album.ejs', {
-              user: req.user || null,
-              request: req,
-              songs: paths,
-              song: data,
-              layout: false
-            });
-          }
-        });
-      }catch(error){
+        // console.log(paths);
+        // search start demo
+        if(req.query.search) {
+          const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+          // Get all campgrounds from DB
+          Song.find({title: regex}, function(err, data){
+            if(err){
+              console.log(err);
+            } else {
+              // res.status(200).json(data);
+              res.render("./../public/views/player/songs/album.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data,
+                layout: false
+              });
+            }
+          });
+        } else {
+          Song.find({}, function(err, data){
+            if(err){
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              // res.status(200).json(data);
+              res.render("./../public/views/player/songs/album.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data
+              });
+            }
+          });
+        } 
+        // search end
+      } catch(error) {
         return next(new Error("Error getting files from Dropbox"));
       }
-    } else {
-        res.redirect('/dropbox/auth');
     }
+  });
 };
 
 
@@ -237,37 +266,22 @@ async function getLinksAsync(token){
 
     //returns a promise that fullfills once all the promises in the array complete or one fails
     return Promise.all(promises);
-  }
-  
-
-
+}
 
 // edit page
-module.exports.edit = async (req, res) => {
-  
-  let token = mycache.get("aTempTokenKey");
-    if(token){
-      try{
-        let paths = await getLinksAsync(token);
-        // console.log(paths);
-        // res.render('./../public/views/player/music/all.ejs', {
+module.exports.edit = (req, res) => {
+  Dropbox.find(function(err, data) {
+      if (err) {
+        console.log(err);
+      } else {
         res.render('./../public/views/player/songs/edit.ejs', {
-            user: req.user || null,
-            request: req,
-            songs: paths,
-            layout: false
+          user: req.user || null,
+          request: req,
+          dropbox: data,
+          layout: false
         });
-      }catch(error){
-        return next(new Error("Error getting files from Dropbox"));
       }
-    } else {
-        res.redirect('/dropbox/auth');
-    }
-  
-// 	res.render('./../public/views/player/edit.ejs', {
-// 		user: req.user || null,
-// 		request: req
-// 	});
+  });
 };
 
 // details page
@@ -366,6 +380,4 @@ module.exports.listView = function(req, res) {
         });
       }
     });
-  
-	
 };
