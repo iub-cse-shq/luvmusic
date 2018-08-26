@@ -1,4 +1,5 @@
 var express = require ('express');
+var multer  = require('multer');
 var cors = require('cors');
 var parser = require('body-parser');
 var passport = require('passport');

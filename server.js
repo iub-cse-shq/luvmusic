@@ -5,6 +5,7 @@
 var config = require('./config/config.js');
 var mongoose = require ('mongoose');
 var express = require ('express');
+var multer  = require('multer');
 
 /**
  * Main application entry file.
