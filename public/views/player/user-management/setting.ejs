@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Settings Profile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/stylePlayer.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/tableStyle.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- javascript link -->
+	<script src="/views/player/js/script.js"></script>
+	
+	<!-- script for dropbox api to upload -->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.1/Dropbox-sdk.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.1/Dropbox-sdk.min.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.1/DropboxTeam-sdk.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.1/DropboxTeam-sdk.min.js"></script>-->
+</head>
+<body>
+	<!-- Sidebar Panel -->
+	<% include ../include/sidebar %>
+	
+	<!-- Music Player -->
+	<% include ../include/player_ui %>
+		
+	<!-- Main Content -->
+	<div class="main-container">
+		<% include ../include/fixed_header %>
+
+		<div class="container-inside2">
+			<div class="header-text">
+				<h3 class="heading-all-text">Edit User</h3>
+				<hr>
+			</div>
+			<div class="content-pane">
+				<div class="row">
+					
+					<form class="edit-form">
+						<div class="form-group">
+							<label class="control-label">Name</label>
+							<input class="form-control" type="text" id="name" value="<%= user.name %>" placeholder="Your name">
+							<div class="error" id="name-err"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Username</label>
+							<input class="form-control" type="text" id="username" value="<%= user.username %>" placeholder="Username">
+							<div class="error" id="username-err"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Email</label>
+							<input class="form-control" type="text" id="email" value="<%= user.email %>" placeholder="Your email">
+							<div class="error" id="email-err"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">City</label>
+							<input class="form-control" type="text" id="city" value="<%= user.city %>" placeholder="Your city">
+							<div class="error" id="city-err"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Country</label>
+							<input class="form-control" type="text" id="country" value="<%= user.country %>" placeholder="Your country">
+							<div class="error" id="country-err"></div>
+						</div>
+						<div class="form-group">
+							<input type="submit" id="save" value="Save" class="btn btn-save">
+							<input type="submit" id="delete" value="Delete Account" class="btn btn-delete">
+						</div>
+						<span><div class="error" id="error"></div></span>
+					</form>
+					
+					
+					<!-- upload photo -->
+					<form class="edit-form" enctype="multipart/form-data" action="/users/<%= request.user._id %>" id="uploadform" method="post" >
+						<h3 class="heading-all-text">Profile Photo</h3>
+						<hr><br>
+						
+						
+						<div class="form-group">
+							<div class="album-art-details">
+								<img id="preview-photo" class="img-details" src="<%= user.photo %>"/>
+							</div>
+							<span class="change-photo-text">Change Photo</span>
+							<input class="form-control" type="file" id="photo" name="userFile" accept="image/*" onchange="previewPhoto()" >
+							<div class="error" id="photo-err"></div>
+							<!-- A place to show the status of the upload -->
+							<h2 id="results"></h2>
+						</div>
+						<input type="submit" id="upload" value="Upload Photo" name="submit" class="btn btn-save">
+					</form>
+					
+					
+				<!--	
+					<form class="edit-form">
+						<div id="#change-pass" class="change-password-div">
+							<span class="change-password-heading">Change Password</span>
+							<hr class="pass-content">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Current Password</label>
+							<input class="form-control" type="password" id="current_password" name="current-password" placeholder="Current password">
+						</div>
+						<div class="form-group">
+							<label class="control-label">New Password</label>
+							<input class="form-control" type="password" id="new_password" name="new-password" placeholder="New password">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Confirm New Password</label>
+							<input class="form-control" type="password" id="confirm_password" name="confirm-password" placeholder="Confirm password">
+						</div>
+						<div class="form-group">
+							<input id="update_password" value="Update Password" class="btn btn-update">
+							<div class="error" id="update_password-err"></div>
+						</div>
+					</form>
+					
+				-->	
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+<script src="/views/player/js/player.js"></script>
+<script>
+
+	var newUser = {name: "", email: "", username: "", city: "", country: ""};
+	var usernamePattern = /^[a-z0-9_-]{3,15}$/;
+	var emailPattern = /^[a-zA-Z0-9]+([\_.-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([\_.-]?[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]{2,4})+$/;
+	
+	$('.error').css({
+		"display": "block",
+		"border": "none",
+		"color": "#ff0000",
+		"font-size": "18px",
+		"width": "100%",
+		"box-sizing": "border-box",
+		"font-family": "'Dosis', sans-serif"
+	});
+	
+	$('#save').click(function(){
+		console.log('save clicked');
+		
+		if($('#name').val() == "") {
+			$("#name-err").text("Your name required!");
+		} else {
+			newUser.name= $('#name').val();
+			$("#name-err").hide();
+		}
+
+		if($('#username').val() == "") {
+			$('#username-err').text("Your username required!");
+		} else if (!$('#username').val().match(usernamePattern)) {
+			$('#username-err').text("Not a valid username!");
+		} else {
+			newUser.username = $('#username').val();
+			$('#username-err').hide();
+		}
+
+		if($('#email').val() == "") {
+			$('#email-err').text("Your email required!");
+		} else if(!$('#email').val().match(emailPattern) ) {
+			$('#email-err').text("Not a valid email!");
+		} else {
+			newUser.email = $('#email').val();
+			$("#email-err").hide();
+		}
+		
+		if($('#city').val() == "") {
+			$('#city-err').text("Enter your city!");
+		} else {
+			newUser.city = $('#city').val();
+			$('#city-err').hide();
+		}
+
+		if($('#country').val() == "") {
+			$("#country-err").text("Enter your country!");
+		} else {
+			newUser.country = $('#country').val();
+			$("#country-err").hide();
+		}
+		
+		
+		$.ajax({
+			method: "PUT",
+			url: "/users/<%= user._id %>",
+			data: newUser
+		}).done(function(response){
+			console.log(response);
+			$("#error").text('Profile updated!').css({
+				"border": "1px solid #00ff00",
+				"color": "#00ff00",
+				"padding": "10px"
+			});
+			// window.location.replace('/profile');
+		}).fail(function(response){
+			console.log(response.responseText);
+			$("#error").text(JSON.parse(response.responseText).message).css({
+				"border": "1px solid #ff0000",
+				"color": "#ff0000",
+				"padding": "10px"
+			});
+		});
+	});
+	
+	$("#delete").click(function(){
+		$.ajax({
+			method: "DELETE",
+			url: "/users/<%= user._id %>",
+		}).done(function(response){
+			console.log(response);
+			$("#error").text('Profile Delete!').css({
+				"border": "1px solid #00ff00",
+				"color": "#00ff00",
+				"padding": "10px"
+			});
+			window.location.replace('/users/list');
+		}).fail(function(response){
+			console.log(response.responseText);
+			$("#error").text(JSON.parse(response.responseText).message).css({
+				"border": "1px solid #ff0000",
+				"color": "#ff0000",
+				"padding": "10px"
+			});
+		});
+	});
+	
+	var newPhoto = {photo: ""}
+	
+	
+	function previewPhoto() {
+	    var preview = document.getElementById('preview-photo'); //selects the query named img
+	    var file = document.getElementById('photo').files[0]; //sames as here
+	    var reader = new FileReader();
+	
+	    reader.onloadend = function () {
+	        preview.src = reader.result;
+	    }
+	
+	    if (file) {
+	        reader.readAsDataURL(file); //reads the data as a URL
+	    } else {
+	        preview.src = "";
+	    }
+	}
+	
+	previewPhoto();
+	
+</script>
+<!--<script src="/views/player/js/dropbox.js"></script>-->
+</html>

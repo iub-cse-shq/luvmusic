@@ -88,13 +88,51 @@ exports.updatePhoto = function(req, res) {
 };
 
 
+exports.index = function(req, res) {
+	User.find({}, function(err, users){
+			res.render('./../public/views/player/user-management/all.ejs', {
+			user: users || null,
+			request: req
+		});
+	});
+}
+
+exports.delete = function(req, res) {
+	User.findByIdAndRemove(req.params.userId, function(err, user){
+		if(err){
+			res.status(500).send(err);
+		}else{
+			const response = {
+		        message: "User successfully deleted",
+		        id: user._id
+		    };
+			res.status(200).send(response);
+		}
+	})
+}
 
 
+module.exports.editView = function(req, res) {
+	User.findOne({ _id: req.params.userId}, function(err, userPro){
+		if(err){
+			res.status(500).send(err);
+		}
+			console.log(userPro);
+
+		res.render('./../public/views/player/user-management/setting.ejs', {
+			user: userPro,
+			request: req
+		});
+	});
+};
 
 
-
-
-
+exports.createUser = function(req, res) {
+	res.render('./../public/views/player/user-management/create.ejs', {
+	   user: req.user || null,
+	   request: req
+	});
+};
 
 
 /**
@@ -108,5 +146,8 @@ exports.me = function(req, res) {
  * Show the current article
  */
 exports.read = function(req, res) {
-	res.json(req.profile);
+	res.render('./../public/views/player/user-management/view.ejs', {
+		user: req.profile,
+		request: req
+	});
 };

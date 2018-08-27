@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Profile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/stylePlayer.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/tableStyle.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- javascript link -->
+	<script src="/views/player/js/script.js"></script>
+
+</head>
+<body>
+	<!-- Sidebar Panel -->
+	<% include ../include/sidebar %>
+	
+	<!-- Music Player -->
+	<% include ../include/player_ui %>
+		
+	<!-- Main Content -->
+	<div class="main-container">
+		<% include ../include/fixed_header %>
+
+		<div class="container-inside2">
+			<div class="header-text">
+				<h3 class="heading-all-text"><%= user.name %></h3>
+				<hr>
+			</div>
+			<div class="content-pane">
+				<div class="row">
+					<table class="music-info">
+						<tr>
+							<td class="title-desc"></td>
+							<td class="value-desc">
+								<div class="album-art-details">
+									<img class="img-details" src="<%= user.photo %>">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="title-desc">Username</td>
+							<td class="value-desc"><%= user.username %></td>
+						</tr>
+						<tr>
+							<td class="title-desc">Name</td>
+							<td class="value-desc"><%= user.name %></td>
+						</tr>
+						<tr>
+							<td class="title-desc">Email</td>
+							<td class="value-desc"><%= user.email %></td>
+						</tr>
+						<tr>
+							<td class="title-desc">City</td>
+							<td class="value-desc"><%= user.city %></td>
+						</tr>
+						<tr>
+							<td class="title-desc">Country</td>
+							<td class="value-desc"><%= user.country %></td>
+						</tr>
+						<tr>
+							<td class="edit-btn"><a href="/users/<%= user._id %>/edit">Setting</a></td>
+							<!--<td class="back-to-prev"><a href="/setting">Password</a></td>-->
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+<script src="/views/player/js/player.js"></script>
+
+</html>

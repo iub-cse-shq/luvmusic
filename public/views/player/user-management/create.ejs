@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create User</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/stylePlayer.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/tableStyle.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- javascript link -->
+	<script src="/views/player/js/script.js"></script>
+	
+	<!-- script for dropbox api to upload -->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.1/Dropbox-sdk.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.1/Dropbox-sdk.min.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.1/DropboxTeam-sdk.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.1/DropboxTeam-sdk.min.js"></script>-->
+</head>
+<body>
+	<!-- Sidebar Panel -->
+	<% include ../include/sidebar %>
+	
+	<!-- Music Player -->
+	<% include ../include/player_ui %>
+		
+	<!-- Main Content -->
+	<div class="main-container">
+		<% include ../include/fixed_header %>
+
+		<div class="container-inside2">
+			<div class="header-text">
+				<h3 class="heading-all-text">Create User</h3>
+				<hr>
+			</div>
+			<div class="content-pane">
+				<div class="row">
+					
+					<div class="forms">
+					    <div class="form-group">
+					        <label class="control-label"> Full Name </label>
+					        <input class="form-control" type="text" id="name" placeholder="Your name">
+            			    <div class="error" id="name-err"></div>
+					    </div>
+					    
+					    <div class="form-group">
+					        <label class="control-label"> Email </label>
+					        <input class="form-control" type="email" id="email" placeholder="Email">
+            			    <div class="error" id="email-err"></div>
+					    </div>
+
+                        <div class="form-group">
+            			    <label class="control-label">Username</label>
+                			<input class="form-control" type="text" id="username" placeholder="Username">
+                			<div class="error" id="username-err"></div>
+            			</div>
+            			
+            			<div class="form-group">
+                			<label class="control-label">Password</label>
+                			<input class="form-control" type="password" id="password" placeholder="Password">
+                			<div class="error" id="password-err"></div>
+                			
+                			
+                			
+                		<div class="form-group">	
+                			<label class="control-label">Confirm Password</label>
+                			<input class="form-control" type="password" id="confirm_password" placeholder="Confirm password">
+                			<div class="error" id="confirm_password-err"></div>
+            	        </div>
+            	
+            	
+            	        <div class="form-group">
+                			<label class="control-label">Country</label>
+                			<select class="form-control" id="country" required>
+                               <option value="" disabled selected hidden="">Country</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="California">California</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="India">India</option>
+                                <option value="Spain">Spain</option>
+                                <option value="USA">USA</option>
+                                <option value="UK">UK</option>
+                            </select>
+                            <div class="error" id="country-err"></div>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label class="control-label">City</label>
+                			<input class="form-control" type="text" id="city" placeholder="City">
+                			<div class="error" id="city-err"></div>
+            			</div>
+            			
+            			<button class="search-btn" id="submit" type="submit">Create User</button>
+            			<span><div class="error" id="error"></div></span>
+            		</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+<script src="/views/player/js/player.js"></script>
+<script>
+	
+	var usernamePattern = /^[a-z0-9_.-]{3,15}$/;
+	var emailPattern = /^[a-zA-Z0-9]+([\_.-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([\_.-]?[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]{2,4})+$/;
+	var newUser = {name: "", email: "", username: "", password: "", city: "", country: ""};
+	
+	$('.error').css({
+		"display": "block",
+		"border": "none",
+		"color": "#ff0000",
+		"font-size": "18px",
+		"width": "100%",
+		"box-sizing": "border-box",
+		"font-family": "'Dosis', sans-serif",
+		"margin-bottom": "10px",
+		"text-align": "left"
+	});
+	
+	$('#submit').click(function(){
+		console.log('save clicked');
+		
+		if($('#name').val() == "") {
+			$("#name-err").text("Your name required!");
+		} else {
+			newUser.name= $('#name').val();
+			$("#name-err").hide();
+		}
+
+		if($('#username').val() == "") {
+			$('#username-err').text("Your username required!");
+		} else if (!$('#username').val().match(usernamePattern)) {
+			$('#username-err').text("Not a valid username!");
+		} else {
+			newUser.username = $('#username').val();
+			$('#username-err').hide();
+		}
+
+		if($('#email').val() == "") {
+			$('#email-err').text("Your email required!");
+		} else if(!$('#email').val().match(emailPattern) ) {
+			$('#email-err').text("Not a valid email!");
+		} else {
+			newUser.email = $('#email').val();
+			$("#email-err").hide();
+		}
+		
+		if($('#password').val() == "") {
+			$('#password-err').text("Please enter a password!");
+		} else if($('#password').val().length < 8) {
+			$('#passowrd-err').text("Password must be at least 8 character");
+		} else {
+			$('#password-err').hide();
+		}
+
+		if($('#confirm_password').val() == "") {
+			$('#confirm_password-err').text("Please confirm your password!");
+		} else if($('#password').val() !== $('#confirm_password').val()) {
+			$('#confirm_password-err').text("Passwords don't match!");
+		} else {
+			newUser.password = $('#password').val();
+			$('#confirm_password-err').hide();
+		}
+		
+		if($('#city').val() == "") {
+			$('#city-err').text("Enter your city!");
+		} else {
+			newUser.city = $('#city').val();
+			$('#city-err').hide();
+		}
+
+		if($('#country').val() == "") {
+			$("#country-err").text("Enter your country!");
+		} else {
+			newUser.country = $('#country').val();
+			$("#country-err").hide();
+		}
+
+		$.ajax({
+			method: "POST",
+			url: "/auth/signup",
+			data: newUser
+		}).done(function(response){
+			console.log(response);
+			$("#error").text('Profile saved!').css({
+				"border": "1px solid #00ff00",
+				"color": "#00ff00",
+				"padding": "5px 10px"
+			});
+			window.location.replace('/users/'+ response._id + '/edit');
+		}).fail(function(response){
+			console.log(response.responseText);
+			$("#error").text(JSON.parse(response.responseText).message).css({
+				"border": "1px solid #ff0000",
+				"color": "#ff0000",
+				"padding": "5px 10px"
+			});
+		});
+	});
+</script>
+<!--<script src="/views/player/js/dropbox.js"></script>-->
+</html>
