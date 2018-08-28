@@ -7,6 +7,7 @@ module.exports = function(app) {
 	var contacts = require('./../controllers/contacts.server.controller.js');
     var users = require('./../controllers/users.server.controller.js');
 
+
     app.route('/api/contacts')
         .get(contacts.list)
         .post(/*users.requiresLogin,*/ contacts.create);
@@ -24,7 +25,7 @@ module.exports = function(app) {
 	app.route('/about').get(core.about);
 	app.route('/contact').get(core.contact);
 	app.route('/faq').get(core.faq);
-
+    
     app.route('/admin/contacts').get(users.requiresLogin, contacts.listView);
     app.route('/admin/contact/:contactId').get(users.requiresLogin, contacts.singleView);
     // app.route('/admin/contact/view').get(contacts.singleView);
