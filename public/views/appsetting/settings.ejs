@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>App Setting | Administrator</title>
+	<title id="headtitle"></title>
+	<link rel="shortcut icon" href="/views/headphones.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/tableStyle.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- javascript link -->
+
+</head>
+
+<body>
+	<!-- Sidebar Panel -->
+	<% include ../player/include/sidebar %>
+
+		<!-- Main Content -->
+		<div class="main-container">
+			<!-- Fixed Header -->
+			<% include ../player/include/fixed_header %>
+
+				<div class="container-inside2">
+					<div class="header-text">
+						<h3 class="heading-all-text">App Setting</h3>
+						<hr>
+					</div>
+					<div class="content-pane">
+						<div class="row">
+							<table style="width: 100%;">
+								<tr>
+									<td>
+										<span class="input-field">
+											<input class="form-control" type="text" id="token" placeholder="Access Token"> 
+										</span>
+										<div class="error" id="token-err"></div>
+									</td>
+								</tr>
+							<tr>
+								<td>
+									<span>
+										<input type="submit" id="submit" value="Save" class="btn btn-save">
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span><div class="error" id="error"></div></span>
+								</td>
+							</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+		</div>
+	<script src="/lib/jquery/dist/jquery.min.js"></script>
+	<script>
+		var newToken = {access_token: ""};
+		$('.error').css({
+			"display": "block",
+			"border": "none",
+			"color": "#ff0000",
+			"font-size": "18px",
+			"width": "50%",
+			"box-sizing": "border-box",
+			"font-family": "'Dosis', sans-serif"
+		});
+		
+		$('#submit').click(function(){
+			console.log('submit clicked');
+			if($('#token').val() == "") {
+				$("#token-err").text("Token required!");
+			} else {
+				newToken.access_token = $('#token').val();
+				$("#token-err").hide();
+			}
+			
+			$.ajax({
+				method: "POST",
+				url: "/api/appsetting",
+				data: newToken
+			}).done(function(response){
+				console.log(response);
+				$("#error").text('Token saved!').css({
+					"border": "1px solid #00ff00",
+					"color": "#00ff00",
+					"padding": "10px"
+				});
+			}).fail(function(response){
+				console.log(response.responseText);
+				$("#error").text(JSON.parse(response.responseText).message).css({
+					"border": "1px solid #ff0000",
+					"color": "#ff0000",
+					"padding": "10px"
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>
