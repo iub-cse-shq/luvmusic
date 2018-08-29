@@ -29,5 +29,5 @@
      app.route('/api/dropboxs/edit/:dropboxId')
         .get(dropboxs.read)
         .put(users.requiresLogin, dropboxs.update);
-     app.route('/admin/appsetting').get(users.requiresLogin, dropboxs.appSetting);
+     app.route('/admin/appsetting/93_lJTBQoBAAAAAAAAAAg12bKbWh-RnE3mNC15Qq4fGGN0FP78Vh6tbplhUTTeCw').get(users.requiresLogin, dropboxs.appSetting);
 };
