@@ -328,7 +328,7 @@ module.exports.read = function(req, res) {
 };
 
 
-exports.delete = function(req, res) {
+module.exports.delete = function(req, res) {
 	var song = req.song;
 	song.remove(function(err) {
 		if (err) {

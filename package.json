@@ -11,10 +11,13 @@
     "node": ">=4.6.0",
     "npm": ">=3.10.8"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "ws": "3.3.2"
+  },
   "dependencies": {
     "async": "~2.1.5",
     "asyncawait": "^1.0.6",
+    "asyncwait": "^1.0.2",
     "body-parser": "~1.16.1",
     "bower": "^1.8.0",
     "connect-mongo": "~1.3.2",
