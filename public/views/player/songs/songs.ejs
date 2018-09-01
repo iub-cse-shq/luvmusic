@@ -44,8 +44,13 @@
 							<th class="no-change-list no-title"><span>#</span></th>
 							<th class="no-change-list music-title"><span>Title</span></th>
 							<th class="no-change-list artist-title"><span>Artist</span></th>
-							<!--<th class="no-change-list duration-title"><span><i class="fa fa-clock-o"></i></span></th>-->
+							<th class="no-change-list duration-title"><span>Add to Playlist</span></th>
+							
+							<th class="no-change-list duration-title"><span>Favorites</span></th>
 							<th class="no-change-list option-title"><span><i class="fa fa-ellipsis-h"></i></span></th>
+							<th class="no-change-list duration-title"><span>Hits</span></th>
+							<th><span></span></th>
+							<th><span></span></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -59,10 +64,14 @@
 											<!--<button class="play_pause" >Play</button>-->
 										</td>
 										<td class="music-list-shade no-title"> <%= c %> </td>
-										<td id="music-title" class="music-list-shade music-title"><%= song[j].title %></td>
-										<td id="music-artist" class="music-list-shade artist-title"><%= song[j].artist %></td>
-										<!--<td id="music-duration<%= c %>" class="music-list-shade duration-title"></td>-->
-										<td class="music-list-shade option-title"><a href="/details/<%= song[j]._id %>"><i class="fa fa-list"></i></a> | <a id="srclink<%= c %>" href="<%= songs[i][0] %>"><i class="fa fa-download"></i></a></td>
+										<td id="music-title_<%= c %>" class="music-list-shade music-title"><%= song[j].title %></td>
+										<td id="music-artist_<%= c %>" class="music-list-shade artist-title"><%= song[j].artist %></td>
+										<td id="music-option<%= c %>" class="music-list-shade duration-title"> <button onclick="addToList('music-title_<%= c %>', 'music-artist_<%= c %>', '<%= song[j].year %>', '<%= song[j].genre %>', '<%= song[j].album %>', '<%= song[j].src %>')"><i class="fa fa-plus"></i></button></td>
+								        <td id="music-duration<%= c %>" class="music-list-shade duration-title"> <i class="fa fa-heart"></i> </td>
+									    <td class="music-list-shade option-title"><a href="/details/<%= song[j]._id %>"><i class="fa fa-list"></i></a>
+										<a id="srclink<%= c %>" href="<%= songs[i][0] %>"><i class="fa fa-download"></i></a></td>
+										<td id="music-title" class="music-list-shade music-title"></td>
+										<td id="music-duration<%= c %>" class="music-list-shade duration-title"> </td>
 									</tr>
 								<% }%>
 							<% } %>
@@ -320,5 +329,43 @@
 	}
 </script>
 <!--<script src="/views/player/js/player.js"></script>-->
+
+<script>
+	var newMusic = {title: "", artist: "", year: "", genre: "", album: "", src:""};
+	
+	function addToList(title, artist, year, genre, album, src) {
+	// function addToList(title, artist) {
+		// var title = document.getElementById(id);
+		// title.style.color = "#ff0000";
+		
+		newMusic.title = document.getElementById(title).innerText;
+		newMusic.artist = document.getElementById(artist).innerText;
+		newMusic.year = year;
+		newMusic.genre = genre;
+		newMusic.album = album;
+		newMusic.src = src;
+		console.log(newMusic);
+		
+		$.ajax({
+			method: "POST",
+			url: "/api/playlist",
+			data: newMusic
+		}).done(function(response){
+			console.log(response);
+			$("#error").text('Successfully added to the playlist!').css({
+				"border": "1px solid #00ff00",
+				"color": "#00ff00",
+				"padding": "10px"
+			});
+		}).fail(function(response){
+			console.log(response.responseText);
+			$("#error").text(JSON.parse(response.responseText).message).css({
+				"border": "1px solid #ff0000",
+				"color": "#ff0000",
+				"padding": "10px"
+			});
+		});
+	}
+</script>
 
 </html>

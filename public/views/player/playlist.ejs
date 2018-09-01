@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Music List</title>
+	<link rel="shortcut icon" href="/views/headphones.png"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/stylePlayer.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/tableStyle.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- javascript link -->
+	<script src="/views/player/js/script.js"></script>
+</head>
+<body>
+	<!-- Sidebar Panel -->
+	<% include ./include/sidebar %>
+	
+	<!-- Music Player -->
+	<% include ./include/player_ui %>
+		
+	<!-- Main Content -->
+	<div class="main-container">
+		<% include ./include/fixed_header %>
+		<div class="container-inside2">
+			<div class="header-for-all">
+				<div class="cover-img-container">
+					<div class="header-img-container">
+						<img class="header-img" src="https://dl.dropboxusercontent.com/s/1d659on1oajhl62/music-logo.png?dl=0">
+					</div>
+				</div>
+				<div class="text-container">					
+					<h3 class="heading-category-text">Playlist</h3>
+					<!--<h4 class="album-text">All Songs</h4>-->
+				</div>
+			</div>
+
+			<div class="row">
+				
+				<table class="music-list" id="myTable" >
+					<thead>
+						<tr class="music-list-table-header">
+							<th class="no-change-list play-pause-header"><span><i class="fa fa-play"></i>|<i class="fa fa-pause"></i></span></th>
+							<th class="no-change-list no-title"><span>#</span></th>
+							<th class="no-change-list music-title"><span>Title</span></th>
+							<th class="no-change-list artist-title"><span>Artist</span></th>
+						
+						</tr>
+					</thead>
+					<tbody>
+						<% var c = 0 %>
+						<% for(var i=0; i < playlists.length; i++) { %>
+							<% for(var j = 0; j < playlist.length; j++) { %>
+								<% if (playlists[i][2] == playlist[j].src ) { %>
+									<tr class="music-list-table">
+										<td class="music-list-shade play-pause-table">
+										</td>
+										<%= c = c + 1 %>
+										<td class="music-list-shade no-title"> <%= c %> </td>
+										<td id="music-title_<%= c %>" class="music-list-shade music-title"><%= playlist[j].title %></td>
+										<td id="music-artist_<%= c %>" class="music-list-shade artist-title"><%= playlist[j].artist %></td>
+									<!--	<td class="music-list-shade option-title"><a href="/details/<%= playlist[j]._id %>"><i class="fa fa-list"></i></a>-->
+									<!--</tr>-->
+								<% }%>
+							<% } %>
+						<% } %>
+					</tbody>
+				</table>
+				
+			</div>	
+		</div>
+	</div>
+	
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+</body>
+
+<script src="/lib/jquery/dist/jquery-paginate.js"></script>
+<script src="/lib/jquery/dist/jquery-paginate.min.js"></script>
+<!--<script src="/lib/jquery/dist/moment.min.js"></script>-->
+
+<script>
+	// Paginate it
+	$('#myTable').paginate({
+		limit: 5,
+		initialPage: 0
+	});
+
+
+	// var l = 0;
+	// l = l + 1;
+	// $("#myaudio" + l).on("canplaythrough", function(e){
+	//     var seconds = e.currentTarget.duration;
+	//     var duration = moment.duration(seconds, "seconds");
+	    
+	//     var time = "";
+	//     var hours = duration.hours();
+	//     if (hours > 0) { time = hours + ":" ; }
+	    
+	//     time = time + duration.minutes() + ":" + duration.seconds();
+	//     $("#music-duration" + l).text(time);
+	// });
+	
+
+<!--<script src="/views/player/js/player.js"></script>-->
+
+<script>
+	var newMusic = {title: "", artist: "", year: "", genre: "", album: "", src:""};
+	
+	function addToList(title, artist, year, genre, album, src) {
+		var title = document.getElementById(id);
+		title.style.color = "#ff0000";
+		
+		newMusic.title = document.getElementById(title);;
+		newMusic.artist = document.getElementById(artist);
+		newMusic.year = document.getElementById(year);
+		newMusic.genre = document.getElementById(genre);
+		newMusic.album = document.getElementById(album);
+		newMusic.src = document.getElementById(src);
+	
+		$.ajax({
+			method: "POST",
+			url: "/api/songs",
+			data: newMusic
+		}).done(function(response){
+			console.log(response);
+			$("#error").text('Successfully added music!!').css({
+				"border": "1px solid #00ff00",
+				"color": "#00ff00",
+				"padding": "10px"
+			});
+		}).fail(function(response){
+			console.log(response.responseText);
+			$("#error").text(JSON.parse(response.responseText).message).css({
+				"border": "1px solid #ff0000",
+				"color": "#ff0000",
+				"padding": "10px"
+			});
+		});
+	}
+	
+</script>
+
+</html>
