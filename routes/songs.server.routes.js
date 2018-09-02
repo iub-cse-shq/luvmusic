@@ -17,7 +17,7 @@ module.exports = function(app) {
     app.route('/edit').get(users.requiresLogin, songs.edit);
     app.route('/details/:songId').get(users.requiresLogin, songs.details);  //  /details
     app.route('/browse/songs').get(users.requiresLogin, songs.home);        //  /browse/songs
-    
+    app.route('/browse/genre').get(users.requiresLogin, songs.genre);
     app.route('/browse/albums').get(users.requiresLogin, songs.album);        //  /browse/songs
     
     app.param('songId', songs.songByID);

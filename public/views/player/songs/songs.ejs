@@ -44,6 +44,7 @@
 							<th class="no-change-list no-title"><span>#</span></th>
 							<th class="no-change-list music-title"><span>Title</span></th>
 							<th class="no-change-list artist-title"><span>Artist</span></th>
+							<th class="no-change-list artist-title"><span>Genre</span></th>
 							<!--<th class="no-change-list duration-title"><span><i class="fa fa-clock-o"></i></span></th>-->
 							<th class="no-change-list option-title"><span><i class="fa fa-ellipsis-h"></i></span></th>
 						</tr>
@@ -61,6 +62,7 @@
 										<td class="music-list-shade no-title"> <%= c %> </td>
 										<td id="music-title" class="music-list-shade music-title"><%= song[j].title %></td>
 										<td id="music-artist" class="music-list-shade artist-title"><%= song[j].artist %></td>
+										<td id="music-artist" class="music-list-shade artist-title"><%= song[j].genre %></td>
 										<!--<td id="music-duration<%= c %>" class="music-list-shade duration-title"></td>-->
 										<td class="music-list-shade option-title"><a href="/details/<%= song[j]._id %>"><i class="fa fa-list"></i></a> | <a id="srclink<%= c %>" href="<%= songs[i][0] %>"><i class="fa fa-download"></i></a></td>
 									</tr>

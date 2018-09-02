@@ -72,6 +72,14 @@ module.exports.home = async (req,res,next) => {
   });
 };     
 
+
+module.exports.genre = function(req, res) {
+	res.render('./../public/views/player/songs/genre.ejs', {
+		user: req.user || null,
+		request: req
+	});
+};
+
 // /browse/album
 module.exports.album = async (req,res,next) => {
 
