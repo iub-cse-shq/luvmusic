@@ -39,8 +39,14 @@ var data4 = data3.map(function(x){
     return mapper[x]
 });
 
-//Cluster the data and calculating the mean squared error
+//Clustering the data
 function error (x) {
     var clusters, centers;
-    var center = clusters.centers();
+    var centroid = clusters.centers[clusters.predict(point)];
+    var total = 0;
+    for (var i = 0; i < centroid; i++) {
+        total += Math.pow(i, 2);
+    }
+    return Math.sqrt(total);
+    
 }
