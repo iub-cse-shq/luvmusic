@@ -36,7 +36,6 @@
 			</div>
 
 			<div class="row">
-				
 				<table class="music-list" id="myTable" >
 					<thead>
 						<tr class="music-list-table-header">
@@ -53,9 +52,8 @@
 							<% for(var j = 0; j < playlist.length; j++) { %>
 								<% if (playlists[i][2] == playlist[j].src ) { %>
 									<tr class="music-list-table">
-										<td class="music-list-shade play-pause-table">
-										</td>
-										<%= c = c + 1 %>
+										<td class="music-list-shade play-pause-table"></td>
+										<!--<%= c = c + 1 %>-->
 										<td class="music-list-shade no-title"> <%= c %> </td>
 										<td id="music-title_<%= c %>" class="music-list-shade music-title"><%= playlist[j].title %></td>
 										<td id="music-artist_<%= c %>" class="music-list-shade artist-title"><%= playlist[j].artist %></td>

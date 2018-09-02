@@ -19,5 +19,4 @@ module.exports = function (app) {
        
     app.post('/users/:userId', player.uploadPhoto, users.updatePhoto);
     
-    
 }

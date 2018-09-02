@@ -36,6 +36,18 @@ var SongSchema = {
         type: String,
         trim: true,
         required: 'Please select a valid music file!'
+    },
+    
+    like_id: {
+        type: String,
+        default: "#000000",
+        trim: true
+    },
+
+    count: {
+        type: Number,
+        default: 0,
+        trim: true
     }
 }
 

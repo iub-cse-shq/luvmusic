@@ -67,11 +67,16 @@
 										<td id="music-title_<%= c %>" class="music-list-shade music-title"><%= song[j].title %></td>
 										<td id="music-artist_<%= c %>" class="music-list-shade artist-title"><%= song[j].artist %></td>
 										<td id="music-option<%= c %>" class="music-list-shade duration-title"> <button onclick="addToList('music-title_<%= c %>', 'music-artist_<%= c %>', '<%= song[j].year %>', '<%= song[j].genre %>', '<%= song[j].album %>', '<%= song[j].src %>')"><i class="fa fa-plus"></i></button></td>
-								        <td id="music-duration<%= c %>" class="music-list-shade duration-title"> <i class="fa fa-heart"></i> </td>
+								        <td id="music-like_<%= c %>" class="music-list-shade duration-title">
+								        	<!--<button userId="<%= song[j]._id %>" onclick="like('like_<%= c %>')">-->
+								        	<button id="likebtn_<%= song[j]._id %>" class="likebtn" value="false" onclick="addLike('<%= song[j]._id %>', 'like_<%= song[j]._id %>')">
+								        		<i style="color: <%= song[j].like_id %>;" id="like_<%= song[j]._id %>" class="fa fa-thumbs-up"></i>
+								        	</button>
+								        </td>
 									    <td class="music-list-shade option-title"><a href="/details/<%= song[j]._id %>"><i class="fa fa-list"></i></a>
 										<a id="srclink<%= c %>" href="<%= songs[i][0] %>"><i class="fa fa-download"></i></a></td>
 										<td id="music-title" class="music-list-shade music-title"></td>
-										<td id="music-duration<%= c %>" class="music-list-shade duration-title"> </td>
+										<td id="music-duration<%= c %>" class="music-list-shade duration-title"><onclick="counter()"></td>
 									</tr>
 								<% }%>
 							<% } %>
@@ -366,6 +371,60 @@
 			});
 		});
 	}
+	
+	
+</script>
+
+//rafi
+<script>
+ 	var update_likebtn = {like_id:""};
+	// var update_likebtn = {title: "", artist: "", year: "", genre: "", album: "", src:"",like_id=""};
+	function addLike(id, ind){
+		
+		var change = document.getElementById("likebtn_"+id);
+		if (change.value == "false") {
+			update_likebtn.like_id = "#0000ff";
+			$('#' + ind).css({
+				color: "#0000ff"
+			});
+		} else {
+			change.value = "true";
+			update_likebtn.like_id = "#000000";
+		}
+		
+		$.ajax({
+			method: "PUT",
+			url: "/api/songs/edit/"+id,
+			data: update_likebtn
+		}).done(function(response){
+			console.log(response);
+			$("#error").text('Liked').css({
+				"border": "1px solid #00ff00",
+				"color": "#00ff00",
+				"padding": "10px"
+			});
+		}).fail(function(response){
+			console.log(response.responseText);
+			$("#error").text(JSON.parse(response.responseText).message).css({
+				"border": "1px solid #ff0000",
+				"color": "#ff0000",
+				"padding": "10px"
+			});
+		});
+	}
+</script>
+
+<script>
+     function counter(index)
+	{
+		var title=document.getElementsByClassName("fa fa-download"),
+		 count = 0;
+
+  count += 1;
+  button.innerHTML = "fa fa-download" + count;
+	
+	}
+	
 </script>
 
 </html>
