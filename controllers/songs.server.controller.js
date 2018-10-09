@@ -100,19 +100,77 @@ module.exports.album = async (req,res,next) => {
             }
           });
         } else {
-          Song.find({}, function(err, data){
+          Song.aggregate([{$match: {}}, {$group: {_id: "$album"}}], function(err, data){
             if(err){
               return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
               // res.status(200).json(data);
+              // console.log(data);
               res.render("./../public/views/player/songs/album.ejs",{
                 user: req.user || null,
                 request: req,
                 songs: paths,
                 song: data
               });
+              console.log(data[0]._id);
+            }
+          });
+        } 
+        // search end
+      } catch(error) {
+        return next(new Error("Error getting files from Dropbox"));
+      }
+    }
+  });
+};
+
+
+// /browse/album
+module.exports.artist = async (req,res,next) => {
+  Dropbox.find(async (err, data) => {
+    if(err) {
+      console.log(err);
+    } else {
+      let token = data[0].access_token;
+      try{
+        let paths = await getLinksAsync(token);
+        // console.log(paths);
+        // search start demo
+        if(req.query.search) {
+          const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+          // Get all campgrounds from DB
+          Song.find({title: regex}, function(err, data){
+            if(err){
+              console.log(err);
+            } else {
+              // res.status(200).json(data);
+              res.render("./../public/views/player/songs/artist.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data,
+                layout: false
+              });
+            }
+          });
+        } else {
+          Song.aggregate([{$match: {}}, {$group: {_id: "$artist"}}], function(err, data){
+            if(err){
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              // res.status(200).json(data);
+              // console.log(data);
+              res.render("./../public/views/player/songs/artist.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data
+              });
+              console.log(data[0]._id);
             }
           });
         } 
@@ -380,4 +438,126 @@ module.exports.listView = function(req, res) {
         });
       }
     });
+};
+
+
+
+// /browse/album/:albumName
+module.exports.findByAlbum = async (req,res,next) => {
+  Dropbox.find(async (err, data) => {
+    if(err) {
+      console.log(err);
+    } else {
+      let token = data[0].access_token;
+      try{
+        let paths = await getLinksAsync(token);
+        // console.log(paths);
+        // search start demo
+        if(req.query.search) {
+          const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+          // Get all campgrounds from DB
+          Song.find({title: regex}, function(err, data){
+            if(err){
+              console.log(err);
+            } else {
+              // res.status(200).json(data);
+              res.render("./../public/views/player/songs/album.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data,
+                layout: false
+              });
+            }
+          });
+        } else {
+          var albumName = req.params.albumName;
+          console.log(req.params.albumName);
+          Song.find({album: albumName}, function(err, data){
+            if(err){
+                console.log(data);
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              // res.status(200).json(data);
+              res.render("./../public/views/player/songs/albumsongs.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data
+              });
+            }
+          });
+        }
+        // search end
+      } catch(error) {
+        return next(new Error("Error getting files from Dropbox"));
+      }
+    }
+  });
+};
+
+
+// /browse/artist/:artistName
+module.exports.findByArtist = async (req,res,next) => {
+  Dropbox.find(async (err, data) => {
+    if(err) {
+      console.log(err);
+    } else {
+      let token = data[0].access_token;
+      try{
+        let paths = await getLinksAsync(token);
+        // console.log(paths);
+        // search start demo
+        if(req.query.search) {
+          const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+          // Get all campgrounds from DB
+          Song.find({title: regex}, function(err, data){
+            if(err){
+              console.log(err);
+            } else {
+              // res.status(200).json(data);
+              res.render("./../public/views/player/songs/album.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data,
+                layout: false
+              });
+            }
+          });
+        } else {
+          var artistName = req.params.artistName;
+          Song.find({artist: artistName}, function(err, data){
+            if(err){
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              console.log(data);
+              // res.status(200).json(data);
+              // console.log(data);
+              res.render("./../public/views/player/songs/artistsongs.ejs",{
+                user: req.user || null,
+                request: req,
+                songs: paths,
+                song: data
+              });
+            }
+          });
+        }
+        // search end
+      } catch(error) {
+        return next(new Error("Error getting files from Dropbox"));
+      }
+    }
+  });
+};
+
+module.exports.playlists = async(req, res) => {
+  res.render('./../public/views/player/songs/playlists.ejs', {
+    user: req.user || null,
+    request: req
+  });
 };

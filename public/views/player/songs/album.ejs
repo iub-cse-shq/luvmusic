@@ -34,43 +34,14 @@
 					<!--<h4 class="album-text">All Songs</h4>-->
 				</div>
 			</div>
+			
 
 
 			<div class="row">
-				<% var c = 0 %>
-				<% for(var i=0; i < songs.length; i++) { %>
-					<% for(var j = 0; j < song.length; j++) { %>
-						<% if (songs[i][2] == song[j].src) { %>
-							<h1 style="border: 1px solid #ccc; margin-top: 5px; font-size: 16px; width: 50%; color: #f3c80a; font-family: 'Open Sans', sans-serif; padding: 10px; margin-bottom: 10px;"><%= song[j].album %></h1>
-							<table class="music-list" id="myTable" >
-								<thead>
-									<tr class="music-list-table-header">
-										<th class="no-change-list play-pause-header"><span><i class="fa fa-play"></i>|<i class="fa fa-pause"></i></span></th>
-										<th class="no-change-list no-title"><span>#</span></th>
-										<th class="no-change-list music-title"><span>Title</span></th>
-										<th class="no-change-list artist-title"><span>Artist</span></th>
-										<!--<th class="no-change-list duration-title"><span><i class="fa fa-clock-o"></i></span></th>-->
-										<th class="no-change-list option-title"><span><i class="fa fa-ellipsis-h"></i></span></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr class="music-list-table">
-										<td class="music-list-shade play-pause-table">
-											<!--<audio class="play" oncload="musicDur()" id="myaudio<%= c = c + 1 %>" src="<%= songs[i][0] %>" preload="auto"><i class="fa fa-play"></i></audio>-->
-											<!--<button class="play_pause" >Play</button>-->
-										</td>
-										<td class="music-list-shade no-title"> <%= c %> </td>
-										<td id="music-title" class="music-list-shade music-title"><%= song[j].title %></td>
-										<td id="music-artist" class="music-list-shade artist-title"><%= song[j].artist %></td>
-										<!--<td id="music-duration<%= c %>" class="music-list-shade duration-title"></td>-->
-										<td class="music-list-shade option-title"><a href="/details/<%= song[j]._id %>"><i class="fa fa-list"></i></a> | <a id="srclink<%= c %>" href="<%= songs[i][0] %>"><i class="fa fa-download"></i></a></td>
-									</tr>
-								</tbody>
-							</table>
-						<% }%>
-					<% } %>
+				<% var d = 0 %>
+				<% for(var a = 0; a < song.length; a++) { %>
+					<a class="album_link" href="/browse/album/<%= song[a]._id %>"><%= song[a]._id %></a>
 				<% } %>
-				
 			</div>	
 		</div>
 	</div>

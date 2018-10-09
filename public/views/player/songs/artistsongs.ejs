@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Music List</title>
+	<title>Artist / <%= song[0].artist %></title>
 	<link rel="shortcut icon" href="/views/headphones.png"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="/views/player/css/style.css">
 	<link rel="stylesheet" type="text/css" href="/views/player/css/stylePlayer.css">
 	<link rel="stylesheet" type="text/css" href="/views/player/css/tableStyle.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 	<!-- javascript link -->
 	<script src="/views/player/js/script.js"></script>
 </head>
@@ -28,8 +29,8 @@
 						<img class="header-img" src="https://dl.dropboxusercontent.com/s/1d659on1oajhl62/music-logo.png?dl=0">
 					</div>
 				</div>
-				<div class="text-container">					
-					<h3 class="heading-category-text">All Songs</h3>
+				<div class="text-container">
+					<h3 class="heading-category-text"><%= song[0].artist %></h3>
 					<!--<h4 class="album-text">All Songs</h4>-->
 				</div>
 			</div>
@@ -43,7 +44,7 @@
 							<th class="no-change-list no-title"><span>#</span></th>
 							<th class="no-change-list music-title"><span>Title</span></th>
 							<th class="no-change-list artist-title"><span>Artist</span></th>
-							<th class="no-change-list playlist-title"><span><i class="fa fa-lists"></i>Playlist</span></th>
+							<!--<th class="no-change-list duration-title"><span><i class="fa fa-clock-o"></i></span></th>-->
 							<th class="no-change-list option-title"><span><i class="fa fa-ellipsis-h"></i></span></th>
 						</tr>
 					</thead>
@@ -60,9 +61,7 @@
 										<td class="music-list-shade no-title"> <%= c %> </td>
 										<td id="music-title" class="music-list-shade music-title"><%= song[j].title %></td>
 										<td id="music-artist" class="music-list-shade artist-title"><%= song[j].artist %></td>
-										<td id="music-playlists" class="music-list-shade playlist-title">
-											<i class="fa fa-list-alt"></i>
-										</td>
+										<!--<td id="music-duration<%= c %>" class="music-list-shade duration-title"></td>-->
 										<td class="music-list-shade option-title"><a href="/details/<%= song[j]._id %>"><i class="fa fa-list"></i></a> | <a id="srclink<%= c %>" href="<%= songs[i][0] %>"><i class="fa fa-download"></i></a></td>
 									</tr>
 								<% }%>
@@ -320,15 +319,6 @@
 		return isShuffle;
 	}
 </script>
-
-<script>
-	function dropdownPlaylist() {
-		$("#droplist").css({
-			display: "block"
-		})
-	}
-</script>
-
 <!--<script src="/views/player/js/player.js"></script>-->
 
 </html>

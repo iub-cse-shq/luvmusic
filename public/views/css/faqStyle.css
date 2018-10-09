@@ -47,7 +47,7 @@ body.cd-overlay::after {
 }
 
 a {
-  color: #a9c056;
+  color: #000000;
   text-decoration: none;
 }
 
@@ -379,10 +379,10 @@ header h1 {
 @media only screen and (min-width: 768px) {
   .cd-faq-trigger {
     font-size: 24px;
-    font-size: 1.5rem;
-    font-weight: 300;
+    font-size: 1.3rem;
+    font-weight: 400;
     margin: 0;
-    padding: 24px 72px 24px 24px;
+    padding: 20px;
   }
   .cd-faq-trigger::before, .cd-faq-trigger::after {
     /* arrow icon on the right */
@@ -391,7 +391,7 @@ header h1 {
     top: 50%;
     height: 2px;
     width: 13px;
-    background: #cfdca0;
+    background: #000000;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     -webkit-transition-property: -webkit-transform;
@@ -436,15 +436,16 @@ header h1 {
   font-size: 14px;
   font-size: 0.875rem;
   line-height: 1.4;
-  color: #6c7d8e;
+  color: #ffffff;
 }
 @media only screen and (min-width: 768px) {
   .cd-faq-content {
     display: none;
-    padding: 0 24px 30px;
+    padding: 0px 10px 10px 20px;
+    background: #666666;
   }
   .cd-faq-content p {
-    line-height: 1.6;
+    line-height: 30px;
   }
   .no-js .cd-faq-content {
     display: block;

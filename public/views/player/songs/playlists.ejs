@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Playlists</title>
+	<link rel="shortcut icon" href="/views/headphones.png"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/stylePlayer.css">
+	<link rel="stylesheet" type="text/css" href="/views/player/css/tableStyle.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- javascript link -->
+	<script src="/views/player/js/script.js"></script>
+</head>
+<body>
+	<!-- Sidebar Panel -->
+	<% include ../include/sidebar %>
+	
+	<!-- Music Player -->
+	<% include ../include/player_ui %>
+		
+	<!-- Main Content -->
+	<div class="main-container">
+		<% include ../include/fixed_header %>
+		<div class="container-inside2">
+			<div class="header-for-all">
+				<div class="cover-img-container">
+					<div class="header-img-container">
+						<img class="header-img" src="https://dl.dropboxusercontent.com/s/1d659on1oajhl62/music-logo.png?dl=0">
+					</div>
+				</div>
+				<div class="text-container">					
+					<h3 class="heading-category-text">Playlists</h3>
+				</div>
+			</div>
+			
+			<div class="row">
+				<a class="album_link" href="/browse/playlist/">Playlist 1</a>
+				<a class="album_link" href="/browse/playlist/">Playlist 2</a>
+			</div>	
+		</div>
+	</div>
+	
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+</body>
+<!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+<!--<script type="text/javascript" src="https://code.jquery.com/ui/jquery-ui-git.js"></script>-->
+<!--<script src="/lib/jquery/dist/jquery.min.js"></script>-->
+<!--<script src="/lib/jquery/dist/script.js"></script>-->
+<script src="/lib/jquery/dist/jquery-paginate.js"></script>
+<script src="/lib/jquery/dist/jquery-paginate.min.js"></script>
+<!--<script src="/lib/jquery/dist/moment.min.js"></script>-->
+
+<script>
+	// Paginate it
+	$('#myTable').paginate({
+		limit: 5,
+		initialPage: 0
+	});
+</script>
+</html>
